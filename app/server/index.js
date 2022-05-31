@@ -1,7 +1,7 @@
 const express = require('express');
 const routerApi = require('../routes')
 const app = express()
-const port = '8080'
+const port = '5040'
 var bodyParser = require('body-parser')
 
 
