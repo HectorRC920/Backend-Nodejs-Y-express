@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const faker = require('faker')
-
 // router.use declara el middleware para la ruta especificada
 //en este caso /
 router.use("/", function (req, res, next) {
   console.log("comenzando el middleware de la raiz");
   const { size } = req.query;
-  if (size >= 1) {
+  if (size >= 1 || size ==  undefined) {
     console.log("middleware pasado");
     next(); //se ejecuta el router.get
   } else {
@@ -37,6 +36,31 @@ router.post('/', (req, res) => {
     res.json({
         message: 'succes',
         body: body
+    })
+})
+router.patch('/:id', (req, res) => {
+    const {id} = req.params;
+    const body = req.body;
+    res.json({
+        message: 'partial update',
+        body: body,
+        id
+    })
+})
+router.put('/:id', (req, res) => {
+    const {id} = req.params;
+    const body = req.body;
+    res.json({
+        message: 'complete update',
+        body: body,
+        id
+    })
+})
+router.delete('/:id', (req, res) => {
+    const {id} = req.params;
+    res.json({
+        message: 'delete',
+        id
     })
 })
 
