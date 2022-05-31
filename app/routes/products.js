@@ -1,5 +1,4 @@
 const express = require("express");
-const res = require("express/lib/response");
 const router = express.Router();
 
 // router.use declara el middleware para la ruta especificada
@@ -7,7 +6,7 @@ const router = express.Router();
 router.use("/", function (req, res, next) {
   console.log("comenzando el middleware de la raiz");
   const { id } = req.query;
-  if (id == 1) {
+  if (id == 1 || id == undefined) {
     console.log("middleware pasado");
     next(); //se ejecuta el router.get
   } else {
@@ -18,6 +17,14 @@ router.use("/", function (req, res, next) {
 router.get("/", (req, res) => {
   res.send("ya pasamos la migra");
 });
+
+router.post('/', (req, res) => {
+    const body = req.body
+    res.json({
+        message: 'succes',
+        body: body
+    })
+})
 
 router.use("/about", function (req, res, next) {
   console.log("pasando por middleware de about");
