@@ -20,7 +20,7 @@ router.use("/", function (req, res, next) {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const products = await service.find();
     res.json(products);
@@ -34,7 +34,7 @@ router.get("/:id", async (req, res, next) => {
     const product = await service.findOne(id);
     res.json(product);
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
@@ -48,35 +48,35 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     res.json({
-      error: error
-    })
+      error: error,
+    });
   }
 });
 router.patch("/:id", async (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-  const updatedProduct = await service.update(body, id);
-  res.json({
-    message: "succes",
-    product: updatedProduct,
-  });
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const updatedProduct = await service.update(body, id);
+  } catch (error) {
+    next(error);
+  }
 });
-router.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-  const updatedProduct = await service.update(body, id);
-  res.json({
-    message: "succes",
-    product: updatedProduct,
-  });
+router.put("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const updatedProduct = await service.update(body, id);
+  } catch (error) {
+    next(error);
+  }
 });
-router.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-  const deletedProductId = await service.delete(id)
-  res.json({
-    message: "succes",
-    deletedProductId,
-  });
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedProductId = await service.delete(id);
+  } catch (error) {
+   next(error) 
+  }
 });
 
 router.use("/about", function (req, res, next) {
