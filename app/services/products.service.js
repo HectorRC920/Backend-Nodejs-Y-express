@@ -10,7 +10,7 @@ class ProductsService {
     const limit = 100;
     for (let index = 0; index < limit; index++) {
       this.products.push({
-        id: index,
+        id: faker.datatype.uuid(),
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(), 10),
         image: faker.image.imageUrl(),
@@ -22,7 +22,7 @@ class ProductsService {
       return new Promise((resolve,reject) => {
           setTimeout(() => {
             resolve(this.products)
-          },5000)
+          },2000)
       })
   };
   findOne = async (id) => {
@@ -36,9 +36,9 @@ class ProductsService {
     return product;
   };
   create = async (data) => {
+    data['id'] = faker.datatype.uuid()
     const newProduct = {
       ...data,
-      id: faker.datatype.uuid(),
     };
     this.products.push(newProduct)
     return newProduct
@@ -53,7 +53,7 @@ class ProductsService {
         ...updatedProduct,
         ...body
     }
-    return updatedProduct
+    return this.products[index]
   }
   delete = async (id) => {
     const index = this.products.findIndex((item) => item.id == id)

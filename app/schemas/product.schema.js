@@ -3,10 +3,10 @@ const Joi = require('joi')
 
 const id = Joi.string().uuid();
 const  name =Joi.string().alphanum().min(3).max(15)
-const price = Joi.number().name(10)
+const price = Joi.number().min(10)
 const image = Joi.string()
 const createProductSchema = Joi.object({
-    id: id.required(),
+    // id: id.required(),
     name: name.required(),
     price: price.required(),
     image: image.required(),
