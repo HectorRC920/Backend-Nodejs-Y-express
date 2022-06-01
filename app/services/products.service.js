@@ -16,13 +16,17 @@ class ProductsService {
       });
     }
   }
-  find = async () => {
-    return this.products;
+  find = () => {
+      return new Promise((resolve,reject) => {
+          setTimeout(() => {
+            resolve(this.products)
+          },5000)
+      })
   };
   findOne = async (id) => {
     const product = this.products.find((item) => item.id == id);
     if (product === undefined) {
-      return new Error(`No se encuentra el producto con id ${id}`);
+      throw new Error(`No se encuentra el producto con id ${id}`);
     }
     return product;
   };
@@ -37,7 +41,7 @@ class ProductsService {
   update = async (body,id) => {
     const index = this.products.findIndex((item) => item.id == id)
     if(index === -1){
-        return new Error('product not found')
+        throw new Error('product not found')
     }
     const updatedProduct = this.products[index]
     this.products[index] = {
@@ -49,7 +53,7 @@ class ProductsService {
   delete = async (id) => {
     const index = this.products.findIndex((item) => item.id == id)
     if(index === -1){
-        return new Error('product not found')
+        throw new Error('product not found')
     }
     this.products.splice(index,1)
     return {id}
