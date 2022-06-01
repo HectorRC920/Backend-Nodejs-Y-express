@@ -1,68 +1,77 @@
 const express = require("express");
 const router = express.Router();
-const faker = require('faker')
+const ProductsService = require("../services/products.service");
+
+const service = new ProductsService();
 // router.use declara el middleware para la ruta especificada
 //en este caso /
 router.use("/", function (req, res, next) {
   console.log("comenzando el middleware de la raiz");
   const { size } = req.query;
-  if (size >= 1 || size ==  undefined) {
+  if (size >= 1 || size == undefined) {
     console.log("middleware pasado");
     next(); //se ejecuta el router.get
   } else {
-      res.json({error :"middleware rechazado porque se necesita mas de un producto"},404)
+    res.json(
+      { error: "middleware rechazado porque se necesita mas de un producto" },
+      404
+    );
     // console.log();
   }
 });
-router.get('/',(req, res) => {
-  const products = []
-  const {size} = req.query
-  const limit = size || 100;
-  console.log(limit);
-  for (let index = 0; index < limit; index++) {
-      products.push({
-          name: faker.commerce.productName(),
-          price: parseInt(faker.commerce.price(),10),
-          image: faker.image.imageUrl()
-      })
-      
+
+router.get("/", async (req, res) => {
+  try {
+    const products = await service.find();
+    res.json(products);
+  } catch (error) {
+    next(error);
   }
-  res.json(products)
+});
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await service.findOne(id);
+    res.json(product);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
-})
-
-router.post('/', (req, res) => {
-    const body = req.body
-    res.json({
-        message: 'succes',
-        body: body
-    })
-})
-router.patch('/:id', (req, res) => {
-    const {id} = req.params;
-    const body = req.body;
-    res.json({
-        message: 'partial update',
-        body: body,
-        id
-    })
-})
-router.put('/:id', (req, res) => {
-    const {id} = req.params;
-    const body = req.body;
-    res.json({
-        message: 'complete update',
-        body: body,
-        id
-    })
-})
-router.delete('/:id', (req, res) => {
-    const {id} = req.params;
-    res.json({
-        message: 'delete',
-        id
-    })
-})
+router.post("/", async (req, res) => {
+  const body = req.body;
+  const newProduct = await service.create(body);
+  res.json({
+    message: "succes",
+    newProduct: newProduct,
+  });
+});
+router.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+  const updatedProduct = await service.update(body, id);
+  res.json({
+    message: "succes",
+    product: updatedProduct,
+  });
+});
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+  const updatedProduct = await service.update(body, id);
+  res.json({
+    message: "succes",
+    product: updatedProduct,
+  });
+});
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  const deletedProductId = await service.delete(id)
+  res.json({
+    message: "succes",
+    deletedProductId,
+  });
+});
 
 router.use("/about", function (req, res, next) {
   console.log("pasando por middleware de about");
