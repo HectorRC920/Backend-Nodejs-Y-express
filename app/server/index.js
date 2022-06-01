@@ -2,13 +2,13 @@ const express = require('express');
 const routerApi = require('../routes')
 const cors = require('cors')
 const app = express()
-const port = '5040'
+const port = process.env.PORT || 3000
 var bodyParser = require('body-parser')
 const {logErrors, errorHandler, boomErrorHandler} = require('../middlewares/error.handler')
 const whiteList = ['http://localhost:3000']
 const options = {
     origin: (origin, callback) => {
-        if(whiteList.includes(origin)){
+        if(whiteList.includes(origin) || !origin){
             callback(null, true)
         } else {
             callback(new Error('no permitido'))

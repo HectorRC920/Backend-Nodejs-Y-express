@@ -5,7 +5,8 @@
   "main": "app/server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon"
+    "dev": "nodemon",
+    "start": "node ./app/server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -21,5 +22,8 @@
   "devDependencies": {
     "faker": "^5.5.3",
     "nodemon": "^2.0.16"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
