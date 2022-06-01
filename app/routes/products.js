@@ -77,7 +77,8 @@ router.patch("/:id", async (req, res) => {
 });
 router.put(
   "/:id",
-  validatorHandler(updateProductSchema, "params"),
+  validatorHandler(getProductSchema, "params"),
+  validatorHandler(updateProductSchema, "body"),
   async (req, res, next) => {
     try {
       const { id } = req.params;
