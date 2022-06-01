@@ -28,15 +28,13 @@ router.get("/", async (req, res) => {
     next(error);
   }
 });
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const product = await service.findOne(id);
     res.json(product);
   } catch (error) {
-    res.status(404).json({
-      message: error.message
-    });
+    next(error)
   }
 });
 

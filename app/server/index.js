@@ -3,7 +3,7 @@ const routerApi = require('../routes')
 const app = express()
 const port = '5040'
 var bodyParser = require('body-parser')
-
+const {logErrors, errorHandler} = require('../middlewares/error.handler')
 
 
 app.use(bodyParser.json());
@@ -13,6 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json())
 
 routerApi(app);
+
+app.use(logErrors)
+app.use(errorHandler)
 
 
 app.listen(port,() => {
