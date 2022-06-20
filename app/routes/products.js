@@ -8,22 +8,7 @@ const {
   getProductSchema,
 } = require("../schemas/product.schema");
 const service = new ProductsService();
-// router.use declara el middleware para la ruta especificada
-//en este caso /
-router.use("/", function (req, res, next) {
-  console.log("comenzando el middleware de la raiz");
-  const { size } = req.query;
-  if (size >= 1 || size == undefined) {
-    console.log("middleware pasado");
-    next(); //se ejecuta el router.get
-  } else {
-    res.json(
-      { error: "middleware rechazado porque se necesita mas de un producto" },
-      404
-    );
-    // console.log();
-  }
-});
+
 
 router.get("/", async (req, res, next) => {
   try {
